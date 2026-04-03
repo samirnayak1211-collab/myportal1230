@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="or">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odisha Seva - Govt Admin Panel</title>
+    <style>
+        :root { 
+            --orange: #FF8C00; 
+            --dark-orange: #E67E22;
+            --sidebar: #2c3e50;
+            --light-gray: #f8f9fa;
+        }
+
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--light-gray); }
+
+        /* --- LOGIN PAGE (ORANGE THEME) --- */
+        #loginPage {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #FF8C00, #ff5e00);
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 380px;
+        }
+        .login-box img { width: 90px; margin-bottom: 15px; }
+        .login-box h2 { color: var(--orange); margin-bottom: 25px; letter-spacing: 1px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--orange); }
+        .btn-login { width: 100%; padding: 14px; background: var(--orange); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        
+        /* --- DASHBOARD --- */
+        #dashboard { display: none; height: 100vh; flex-direction: column; }
+        .nav { background: white; padding: 10px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--orange); }
+        .nav .logo-area { display: flex; align-items: center; gap: 10px; }
+        .nav .logo-area img { width: 40px; }
+        
+        /* SideBar */
+        .main { display: flex; flex: 1; overflow: hidden; }
+        .sidebar { width: 260px; background: var(--sidebar); color: white; padding: 20px 0; }
+        .sidebar li { padding: 15px 25px; list-style: none; cursor: pointer; transition: 0.3s; border-left: 4px solid transparent; }
+        .sidebar li:hover { background: #34495e; border-left: 4px solid var(--orange); }
+
+        .content { flex: 1; padding: 30px; overflow-y: auto; }
+        .section-header { border-bottom: 2px solid #ddd; margin-bottom: 20px; padding-bottom: 10px; color: var(--sidebar); }
+
+        /* Service Cards */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #eee; text-decoration: none; color: #333; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--orange); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .card h4 { margin: 0 0 10px 0; color: var(--dark-orange); }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div id="loginPage">
+    <div class="login-box">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Seal_of_Odisha.png">
+        <h2>ODISHA SEVA</h2>
+        <input type="text" id="userid" placeholder="Admin ID">
+        <input type="password" id="password" placeholder="Password">
+        <button class="btn-login" onclick="doLogin()">LOGIN NOW</button>
+        <p id="err" style="color:red; font-size: 13px; margin-top: 10px;"></p>
+    </div>
+</div>
+
+<div id="dashboard">
+    <div class="nav">
+        <div class="logo-area">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Seal_of_Odisha.png">
+            <h3 style="margin:0;">Government of Odisha</h3>
+        </div>
+        <div style="font-weight: bold; color: var(--dark-orange);">Welcome, Admin Profile</div>
+    </div>
+
+    <div class="main">
+        <div class="sidebar">
+            <li onclick="openTab('all')">📑 All Services</li>
+            <li onclick="openTab('pension')">👴 Pension Services</li>
+            <li onclick="openTab('receipt')">📄 Receipt (Pauti)</li>
+            <li onclick="openTab('profile')">⚙️ Profile Settings</li>
+            <li onclick="location.reload()" style="margin-top:50px; color: #ff7675;">Logout</li>
+        </div>
+
+        <div class="content">
+            <div id="all">
+                <h2 class="section-header">Online Services</h2>
+                <div class="grid">
+                    <a href="https://edistrict.odisha.gov.in/" target="_blank" class="card"><h4>e-District</h4><p>Income, Resident, Caste Certificates.</p></a>
+                    <a href="https://bhulekh.ori.nic.in/" target="_blank" class="card"><h4>Bhulekh</h4><p>Check Land Records & ROR.</p></a>
+                    <a href="https://kalia.odisha.gov.in/" target="_blank" class="card"><h4>KALIA Yojana</h4><p>Farmer's Payment Status.</p></a>
+                    <a href="https://food.odisha.gov.in/" target="_blank" class="card"><h4>Ration Card</h4><p>Food Supplies & e-KYC.</p></a>
+                </div>
+            </div>
+
+            <div id="pension" class="hidden">
+                <h2 class="section-header">Pension Management</h2>
+                <div class="grid">
+                    <a href="https://pension.ssepd.gov.in/public/pension_status.aspx" target="_blank" class="card"><h4>Madhu Babu Status</h4><p>Check Pension Payment Status.</p></a>
+                    <a href="https://pension.ssepd.gov.in/registration/registration.aspx" target="_blank" class="card"><h4>Apply Pension</h4><p>New Registration Portal.</p></a>
+                </div>
+            </div>
+
+            <div id="receipt" class="hidden">
+                <h2 class="section-header">Generate Receipt</h2>
+                <div style="background:white; padding:30px; border-radius:15px; width:400px;">
+                    <input type="text" id="cName" placeholder="Applicant Name">
+                    <input type="text" id="cID" placeholder="Application ID">
+                    <button class="btn-login" onclick="printThis()">PRINT RECEIPT</button>
+                </div>
+            </div>
+
+            <div id="profile" class="hidden">
+                <h2 class="section-header">Admin Privacy Settings</h2>
+                <div style="background:white; padding:30px; border-radius:15px; width:400px;">
+                    <p><b>Role:</b> Administrator</p>
+                    <p><b>Status:</b> Secure Session Active</p>
+                    <hr>
+                    <label>Change Password:</label>
+                    <input type="text" id="newPass" placeholder="Enter New Password">
+                    <button class="btn-login" onclick="savePass()">SAVE CHANGES</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const MY_ID = "6370747500";
+    if(!localStorage.getItem('adminPass')) { localStorage.setItem('adminPass', '6370747500'); }
+
+    function doLogin() {
+        let u = document.getElementById('userid').value;
+        let p = document.getElementById('password').value;
+        if(u === MY_ID && p === localStorage.getItem('adminPass')) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'flex';
+        } else {
+            document.getElementById('err').innerText = "Invalid ID or Password!";
+        }
+    }
+
+    function openTab(id) {
+        ['all', 'pension', 'receipt', 'profile'].forEach(t => document.getElementById(t).classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    function savePass() {
+        let np = document.getElementById('newPass').value;
+        if(np.length >= 4) {
+            localStorage.setItem('adminPass', np);
+            alert("Password updated! Please login again.");
+            location.reload();
+        }
+    }
+
+    function printThis() {
+        let n = document.getElementById('cName').value;
+        let i = document.getElementById('cID').value;
+        if(!n || !i) return alert("Details bhariye!");
+        
+        let pWindow = window.open('', '', 'width=800,height=600');
+        pWindow.document.write(`
+            <div style="border:2px solid #000; padding:40px; font-family:sans-serif; text-align:center;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Seal_of_Odisha.png" width="60">
+                <h2>GOVERNMENT OF ODISHA</h2>
+                <hr>
+                <div style="text-align:left; margin-top:30px;">
+                    <p><b>Date:</b> ${new Date().toLocaleDateString()}</p>
+                    <p><b>Name:</b> ${n}</p>
+                    <p><b>Application ID:</b> ${i}</p>
+                    <p><b>Status:</b> Success</p>
+                </div>
+                <p style="margin-top:80px;">___________________<br>Signature</p>
+            </div>
+        `);
+        pWindow.print();
+    }
+</script>
+</body>
+</html>
